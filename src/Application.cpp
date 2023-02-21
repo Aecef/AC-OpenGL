@@ -33,8 +33,13 @@ int main(void)
     // Generate buffer and return an id
     unsigned int buffer;
     glGenBuffers(1, &buffer);
+    
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer( 0, 2, GL_FLOAT, false, sizeof(float) * 2 , 0);
+
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
