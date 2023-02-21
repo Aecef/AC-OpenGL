@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include <iostream>;
 
 int main(void)
@@ -18,10 +19,22 @@ int main(void)
         return -1;
     }
 
-
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
-    std::cout << (glewInit() == GLEW_OK);
+
+    GLenum err = glewInit();
+
+    float positions[6] = {
+        -0.5f, -0.5f,
+         0.0f,  0.5f,
+         0.5f, -0.5f
+    };
+
+    // Generate buffer and return an id
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -29,11 +42,7 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBegin(GL_TRIANGLES);
-        glVertex2f(-0.5f, -0.5f);
-        glVertex2f(0.0f, 1.0f);
-        glVertex2f(0.5f, -0.5f);
-        glEnd();
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

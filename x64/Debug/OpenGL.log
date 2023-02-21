@@ -1,6 +1,3 @@
 ﻿  Application.cpp
-E:\VisualStudioProjects\OpenGL\src\Application.cpp(3,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-glew32s.lib(glew.obj) : warning LNK4099: PDB '' was not found with 'glew32s.lib(glew.obj)' or at ''; linking object as if no debug info
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+E:\VisualStudioProjects\OpenGL\src\Application.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   OpenGL.vcxproj -> E:\VisualStudioProjects\OpenGL\x64\Debug\OpenGL.exe
