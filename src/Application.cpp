@@ -136,6 +136,8 @@ int main(void)
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    glfwSwapInterval(1);
+
     GLenum err = glewInit();
 
     float positions[] = {
@@ -150,7 +152,7 @@ int main(void)
         2, 3, 0
     };
 
-    // Generate buffer and return an id
+    // Generate vertex buffer and return an id
     unsigned int buffer;
     GLCALL(glGenBuffers(1, &buffer));
     GLCALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
@@ -169,7 +171,13 @@ int main(void)
     ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
 
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
-    glUseProgram(shader);
+    GLCALL(glUseProgram(shader));
+
+    GLCALL(int location = glGetUniformLocation(shader, "u_Color"));
+    ASSERT(location != -1);
+
+    float r = 0.0f;
+    float increment = 0.05f;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -177,8 +185,15 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
+        GLCALL(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
         GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
+        if (r > 1.0f)
+            increment = -0.05f;
+        if (r < 0.0f)
+            increment =  0.05f;
+
+        r += increment;
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
