@@ -152,11 +152,17 @@ int main(void)
         2, 3, 0
     };
 
+
+    // Generate vertex array object
+    unsigned int vao;
+    GLCALL(glGenVertexArrays(1, &vao));
+    GLCALL(glBindVertexArray(vao));
+
     // Generate vertex buffer and return an id
     unsigned int buffer;
     GLCALL(glGenBuffers(1, &buffer));
     GLCALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-    GLCALL(glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
+    GLCALL(glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), positions, GL_STATIC_DRAW));
 
     // Generate index buffer
     unsigned int ibo;
@@ -176,6 +182,12 @@ int main(void)
     GLCALL(int location = glGetUniformLocation(shader, "u_Color"));
     ASSERT(location != -1);
 
+    // Unbind Buffers
+    GLCALL(glBindVertexArray(0));
+    GLCALL(glUseProgram(shader));
+    GLCALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+    GLCALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
     float r = 0.0f;
     float increment = 0.05f;
 
@@ -185,7 +197,12 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
+        GLCALL(glUseProgram(shader));
         GLCALL(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+
+        GLCALL(glBindVertexArray(vao));
+        GLCALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+
         GLCALL(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
         if (r > 1.0f)
